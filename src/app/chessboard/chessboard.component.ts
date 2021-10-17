@@ -19,7 +19,12 @@ export class ChessboardComponent implements OnInit {
   ngOnInit(): void {
     this.board = ChessBoard('board1', {
       position: 'start',
-      draggable:true
+      draggable:true,
+      sparePieces: true,
+      dropOffBoard: 'snapback',
+      moveSpeed: 'slow',
+      snapbackSpeed:500,
+      snapSpeed: 100
     });
   }
 
