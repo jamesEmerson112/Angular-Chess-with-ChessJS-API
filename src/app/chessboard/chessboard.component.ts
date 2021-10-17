@@ -1,26 +1,33 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 // import * as ChessBoard from '@chrisoakman/chessboardjs';
 
+// declare ChessBoard here
+declare var ChessBoard: any;
+
 @Component({
   selector: 'app-chessboard',
   templateUrl: './chessboard.component.html',
   styleUrls: ['./chessboard.component.css']
 })
-export class ChessboardComponent implements AfterViewInit {
+export class ChessboardComponent implements OnInit {
 
   title = 'frontend';
-  board1: ChessBoard;
+  board: any;
 
   constructor() { }
 
-  // ngOnInit(): void {
-  // }
-
-
-  ngAfterViewInit() {
-    this.board1 = ChessBoard('board1', {
-      draggable: true,
-      pieceTheme: 'node_modules/chessboardjs/www/img/chesspieces/wikipedia/{piece}.png'
+  ngOnInit(): void {
+    this.board = ChessBoard('board1', {
+      position: 'start',
+      draggable:true
     });
   }
+
+
+  // ngAfterViewInit() {
+  //   this.board1 = ChessBoard('board1', {
+  //     draggable: true,
+  //     pieceTheme: 'node_modules/chessboardjs/www/img/chesspieces/wikipedia/{piece}.png'
+  //   });
+  // }
 }
