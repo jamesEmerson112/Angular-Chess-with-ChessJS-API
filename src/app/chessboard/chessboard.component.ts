@@ -47,6 +47,9 @@ export class ChessboardComponent implements OnInit {
         }
       )
     }
+    else{
+      this.board = ChessBoard('board1', 'start');
+    }
   }
   
   // ngAfterViewInit() {
