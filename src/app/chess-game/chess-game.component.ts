@@ -29,7 +29,7 @@ export class ChessGameComponent implements OnInit {
         {
           position: 'r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R',
           draggable:true,
-          sparePieces: true,
+          sparePieces: false,
           dropOffBoard: 'snapback',
           moveSpeed: 'slow',
           snapbackSpeed:500,
@@ -42,7 +42,7 @@ export class ChessGameComponent implements OnInit {
       {
         position: 'start',
         draggable:true,
-        sparePieces: true,
+        sparePieces: false,
         dropOffBoard: 'snapback',
         moveSpeed: 'slow',
         snapbackSpeed:500,
