@@ -1,16 +1,11 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-// import { Chess } from 'chess.js';
 import * as ChessJS from 'chess.js';
-// import { ChessInstance } from 'chess.js';
 import * as $ from "jquery";      // same as declare var $: any;
 
 
 // declare ChessBoard here
 declare var ChessBoard: any;
-// import Chess = require('chess.js');
 const Chess = typeof ChessJS === "function" ? ChessJS : ChessJS.Chess;
-
-
 
 @Component({
   selector: 'app-chessboard',
@@ -23,23 +18,12 @@ export class ChessboardComponent implements OnInit {
   title = 'frontend';
   board: any;
   canEdit = false;
-  // private game: Chess = new Chess();ng 
-  // chess:any = new Chess();
-  // ChessReq:any = require('chess.js')
-  // Chess:ChessInstance = new this.ChessReq();
-  // chess:any = new this.Chess();
-
-
 
   // test LEGAL MOVES
   // VARIABLE
   boardLegalMove: any = null;
-  // game = Chess();          // this causes errors for some reasons
   game = new Chess();
 
-  $status = $('#status');
-  $fen = $('#fen')
-  $pgn = $('#pgn')
 
   config = {
     position: 'start',
@@ -58,15 +42,8 @@ export class ChessboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.board = ChessBoard('board1', this.config);
-    // while(true)
-    // {
-      // this.updateStatus();
-    // }
-    // setTimeout(() => { this.updateStatus();}, 5000);
+    setTimeout(() => { this.updateStatus.bind(this);}, 5000);
     // setTimeout(() => { this.test();}, 5000);
-    $('button').click(function() {
-      alert('Hey testing jquery!');
-    })
   }
 
   // // test LEGAL MOVES
@@ -96,8 +73,6 @@ export class ChessboardComponent implements OnInit {
       }
     )
 
-    console.log("onDrop is running")
-
     // illegal move
     if (move === null) return 'snapback'
 
@@ -113,7 +88,7 @@ export class ChessboardComponent implements OnInit {
   }
 
   updateStatus() {
-    let status = '';
+    let statusTemp = '';
     
     let moveColor = 'White';
     if (this.game.turn() === 'b')
@@ -124,29 +99,33 @@ export class ChessboardComponent implements OnInit {
     // checkmate?
     if (this.game.in_checkmate())
     {
-      status = 'Game over, ' + moveColor + ' is in checkmate'
+      statusTemp = 'Game over, ' + moveColor + ' is in checkmate'
     }
 
     // draw?
     else if (this.game.in_draw()) 
     {
-      status = 'Game over, drawn position'
+      statusTemp = 'Game over, drawn position'
     }
 
     else
     {
-      status = moveColor + ' to move'
+      statusTemp = moveColor + ' to move'
 
       // check?
       if(this.game.in_check())
       {
-        status += ', ' + moveColor + ' is in check'
+        statusTemp += ', ' + moveColor + ' is in check'
       }
     }
 
-    this.$status.html(status)
-    this.$fen.html(this.game.fen())
-    this.$pgn.html(this.game.pgn())
+    // this.$status = (status)
+    // this.$fen(this.game.fen())
+    // this.$pgn(this.game.pgn())
+
+    $('#status').text(statusTemp)
+    $('#fen').html(this.game.fen())
+    $('#pgn').html(this.game.pgn())
   }
   
 }
