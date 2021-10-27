@@ -9,15 +9,15 @@ const Chess = typeof ChessJS === "function" ? ChessJS : ChessJS.Chess;
 @Injectable({
   providedIn: 'root'
 })
-export class ChessboardService implements OnInit {
+export class ChessboardService {
   
   board: any;
   canEdit = false;
 
-  // VARIABLE
+  // ***********************VARIABLE***********************
   boardLegalMove: any = null;
   game = new Chess();
-
+  name:string = "";
   // this config is using available functions from chessjs
   initialChessConfig = {
     position: 'start',
@@ -33,13 +33,24 @@ export class ChessboardService implements OnInit {
   }
 
 
-  constructor() { }
-
-  ngOnInit(): void {
-    this.board = ChessBoard('board1', this.initialChessConfig);
+  constructor() { 
   }
 
-  // FUNCTIONS
+  setUpChessboard(): void {
+    this.board = ChessBoard(this.getBoardName(), this.initialChessConfig);
+  }
+
+  // ***********************FUNCTIONS***********************
+
+  setBoardName(name: string){
+    this.name = name;
+  }
+
+  getBoardName():string{
+    console.log(this.name);
+    return this.name;
+  }
+
   // onDragStart is triggered when a piece is picked up. It helps to define whether
   // the game is over or not; hence, if it is over, no chess pieces should be picked up.
   // it also defines whose turn it is
