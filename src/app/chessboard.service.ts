@@ -36,9 +36,7 @@ export class ChessboardService {
   constructor() { 
   }
 
-  setUpChessboard(): void {
-    this.board = ChessBoard(this.getBoardName(), this.initialChessConfig);
-  }
+
 
   // ***********************FUNCTIONS***********************
 
@@ -51,12 +49,20 @@ export class ChessboardService {
     return this.name;
   }
 
-  // onDragStart is triggered when a piece is picked up. It helps to define whether
-  // the game is over or not; hence, if it is over, no chess pieces should be picked up.
-  // it also defines whose turn it is
-  // Inputs: souce (the source of the piece), piece, position (current position of the piece),
-  //          the current orientation
-  // Output: false if the game is over or false if the turn is invalid
+  setUpChessboard(): void {
+    this.board = ChessBoard(this.getBoardName(), this.initialChessConfig);
+  }
+
+  /**
+   * onDragStart is triggered when a piece is picked up. It helps to define whether
+   * the game is over or not; hence, if it is over, no chess pieces should be picked up.
+   * it also defines whose turn it is
+   * @param source 
+   * @param piece 
+   * @param position 
+   * @param orientation 
+   * @returns false if the game is over or false if the turn is invalid
+   */
   onDragStart(source: any, piece: any, position: any, orientation: any) {
     // do not pick up pieces if the game is over
     console.log(this.game.game_over())
@@ -72,10 +78,16 @@ export class ChessboardService {
     return true;
   };
 
-  // onDrop is triggered when a piece is dropped. 
-  // It checks if a move of a piece is legal or illegal
+  /**
+   * onDrop is triggered when a piece is dropped. 
+   * It checks if a move of a piece is legal or illegal
+   * @param source 
+   * @param target 
+   * @returns false if the game is over or false if the turn is invalid
+   */
+
   // Inputs: souce (the source of the piece), position (current position of the piece),
-  // Output: false if the game is over or false if the turn is invalid
+  // Output:
   onDrop (source:any, target:any){
     // see if the move is legal
     let move = this.game.move(
@@ -94,12 +106,18 @@ export class ChessboardService {
     return;
   }
 
-  // update the board position after the piece snap
-  // for castling, en passant, pawn promotion
+  /**
+   * onSnapEnd()update the board position after the piece snap
+   * for castling, en passant, pawn promotion
+   */
+
   onSnapEnd() {
     this.board.position(this.game.fen());
   }
 
+  /**
+   * updateStatus keeps the game updated. Update each turn
+   */
   updateStatus() {
     let statusTemp = '';
     
