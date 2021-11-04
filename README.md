@@ -27,7 +27,14 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
 
 ## Notes
-https://codingblast.com/chat-application-angular-socket-io/
+https://stackoverflow.com/questions/18722201/two-player-turn-based-game
+Infor about turn-based games
+
+chat features:
+1. https://medium.com/@deguzmanbrianfrancis/setting-up-and-creating-a-chat-app-with-angular-socket-io-3-0-and-express-70c69b8031f6
+this one has Observant
+2. https://codingblast.com/chat-application-angular-socket-io/
+simple example of socketio
 
 install @type/node
 https://github.com/jhlywa/chess.js/issues/208
