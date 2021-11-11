@@ -14,7 +14,13 @@ export class ChatService {
   // what's the socket?
   socket = io('http://localhost:4200');
 
-  public sendMessage(message:String) {}
+  public sendMessage(message:String) {
+    this.socket.emit('message', message);
+  }
 
-  public getMessage(message:String) {}
+  public getMessage(message:String) {
+    this.socket.on('message', (message) => {
+      this.mes
+    })
+  }
 }
