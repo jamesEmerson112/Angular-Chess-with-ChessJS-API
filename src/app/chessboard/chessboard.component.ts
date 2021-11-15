@@ -45,8 +45,7 @@ export class ChessboardComponent implements OnInit{
   //   setTimeout(() => { this.updateStatus.bind(this);}, 5000);
   //   // setTimeout(() => { this.test();}, 5000);
   // }
-
-  // // // test LEGAL MOVES
+  
   // // // FUNCTIONS
   // onDragStart(source: any, piece: any, position: any, orientation: any) {
   //   // do not pick up pieces if the game is over

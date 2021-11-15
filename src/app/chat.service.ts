@@ -19,8 +19,9 @@ export class ChatService {
   }
 
   public getMessage(message:String) {
-    this.socket.on('message', (message) => {
-      this.mes
+    this.socket.on('message', (message:String) => {
+      // this.message$.receive(message);
+      console.log('message: ' + message);
     })
   }
 }
