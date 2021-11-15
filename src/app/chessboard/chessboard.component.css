@@ -1,0 +1,25 @@
+.box
+{
+    position: relative;
+    /* left: 10%; */
+    /* top: 25px; */
+    /* width: 75%;  */
+    display: block; 
+    background-color: azure;
+}
+
+.chessboard
+{
+    background-color: black;
+    position: relative;
+    left: 18.75%;
+    width: 37.5%;
+}
+
+.test
+{
+    position: relative;
+    display:block;
+    background-color:ivory;
+    width: 75%;
+}
