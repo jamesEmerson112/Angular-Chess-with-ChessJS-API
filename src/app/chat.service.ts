@@ -18,10 +18,11 @@ export class ChatService {
     this.socket.emit('message', message);
   }
 
-  public getMessage(message:String) {
-    this.socket.on('message', (message:String) => {
+  public getMessage() {
+    this.socket.on('message', (message) => {
       // this.message$.receive(message);
-      console.log('message: ' + message);
-    })
+      this.message$.next(message);
+    });
+    return this.message$.asObservable();
   }
 }
