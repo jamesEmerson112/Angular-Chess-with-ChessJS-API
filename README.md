@@ -31,6 +31,9 @@ https://stackoverflow.com/questions/18722201/two-player-turn-based-game
 Infor about turn-based games
 
 chat features:
+1. More features for chat (creating room)
+https://stackoverflow.com/questions/32657379/how-i-can-get-a-socket-username-socket-io
+
 1. https://www.tutorialspoint.com/socket.io/socket.io_chat_application.htm
 this is for creating username
 

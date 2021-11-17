@@ -12,7 +12,7 @@ const SOCKET_ENDPOINT = 'localhost:3000'
 export class ChatBoxComponent implements OnInit {
   newMessage: string ="";
   messageList: string[]=[];
-  userName: string = "";
+  username: string = "";
   hiddenButton: boolean = false;
   socket:any;
   public isButtonVisible = true;
@@ -35,13 +35,14 @@ export class ChatBoxComponent implements OnInit {
     this.socket = io(SOCKET_ENDPOINT);
   }
   sendMessage() {
+    // this.newMessage = this.username + ": " +this.newMessage
     this.chatService.sendMessage(this.newMessage);
     this.newMessage = "";
   }
 
   setUsername()
   {
-    this.chatService.setUsername(this.userName);
+    this.chatService.setUsername(this.username);
   }
 
 }

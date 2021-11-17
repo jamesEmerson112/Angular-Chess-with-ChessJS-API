@@ -31,7 +31,7 @@ export class ChatService {
     return this.message$.asObservable();
   }
 
-  public setUsername(userName: string) {
-    this.socket.emit('setUsername', userName)
+  public setUsername(username: string) {
+    this.socket.emit('setUsername', username)
   }
 }

@@ -7,8 +7,12 @@
 </div>
 
 <!-- username -->
-<input [(ngModel)]="userName" (keyup)="$event.keyCode == 13 && setUsername()" />
-<button (click)="setUsername()" *ngIf="this.isButtonVisible" (click)="this.isButtonVisible = false">Submit Username</button>
+<input [(ngModel)]="username" (keyup)="$event.keyCode == 13 && setUsername()" />
+<button (click)="setUsername()" *ngIf="this.isButtonVisible">Submit Username</button>
+
+<label for="username">Username</label>
+<input type="text" [(ngModel)] = "username" 
+ id="username" placeholder="Enter username">
 
 <!-- message -->
 <br>
