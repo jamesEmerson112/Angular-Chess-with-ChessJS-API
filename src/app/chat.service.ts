@@ -6,23 +6,32 @@ import { io } from "socket.io-client";
   providedIn: 'root'
 })
 export class ChatService {
+
+  socket: any;
+
   // receiving messages with behavior
   public message$: BehaviorSubject<string> = new BehaviorSubject('');
+  public username$: BehaviorSubject<string> = new BehaviorSubject('');
 
   constructor() { }
 
-  // what's the socket?
-  socket = io('http://localhost:4200');
+  public getSocket(socket: any){
+    this.socket = socket;
+  }
 
   public sendMessage(message:String) {
     this.socket.emit('message', message);
   }
 
   public getMessage() {
-    this.socket.on('message', (message) => {
+    this.socket.on('message', (message: string) => {
       // this.message$.receive(message);
       this.message$.next(message);
     });
     return this.message$.asObservable();
+  }
+
+  public setUsername(userName: string) {
+    this.socket.emit('setUsername', userName)
   }
 }
