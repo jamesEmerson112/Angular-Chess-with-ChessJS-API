@@ -44,5 +44,4 @@ export class ChatBoxComponent implements OnInit {
   {
     this.chatService.setUsername(this.username);
   }
-
 }
