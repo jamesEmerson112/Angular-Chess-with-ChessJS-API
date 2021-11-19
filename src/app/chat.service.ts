@@ -11,7 +11,7 @@ export class ChatService {
 
   // receiving messages with behavior
   public message$: BehaviorSubject<string> = new BehaviorSubject('');
-  public username$: BehaviorSubject<string> = new BehaviorSubject('');
+  // public username$: BehaviorSubject<string> = new BehaviorSubject('');
 
   constructor() { }
 

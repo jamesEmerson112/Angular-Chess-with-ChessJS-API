@@ -10,9 +10,11 @@ const Chess = typeof ChessJS === "function" ? ChessJS : ChessJS.Chess;
   providedIn: 'root'
 })
 export class ChessboardService {
+
   
   board: any;
   canEdit = false;
+  codeFEN: string = "";
 
   // ***********************VARIABLE***********************
   boardLegalMove: any = null;
@@ -85,9 +87,6 @@ export class ChessboardService {
    * @param target 
    * @returns false if the game is over or false if the turn is invalid
    */
-
-  // Inputs: souce (the source of the piece), position (current position of the piece),
-  // Output:
   onDrop (source:any, target:any){
     // see if the move is legal
     let move = this.game.move(
@@ -150,9 +149,18 @@ export class ChessboardService {
       }
     }
 
+    // debug
+    // automatically update to the html attributes
     $('#status').text(statusTemp)
     $('#fen').html(this.game.fen())
     $('#pgn').html(this.game.pgn())
+
+    this.codeFEN = this.game.fen().toString();
   }
   
+  getFEN()
+  {
+    return this.codeFEN;
+  }
+
 }

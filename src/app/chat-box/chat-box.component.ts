@@ -2,6 +2,8 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { ChatService } from '../chat.service';
 import { io } from 'socket.io-client';
 import { DOCUMENT } from '@angular/common';
+import { SocketService } from '../socket.service';
+
 const SOCKET_ENDPOINT = 'localhost:3000'
 
 @Component({
@@ -20,7 +22,7 @@ export class ChatBoxComponent implements OnInit {
 
   constructor(
     private chatService: ChatService,
-    @Inject(DOCUMENT) private document: Document) { }
+    private socketService: SocketService) { }
 
   ngOnInit(): void {
     this.setupSocketConnection();
@@ -32,7 +34,7 @@ export class ChatBoxComponent implements OnInit {
   }
 
   setupSocketConnection(){
-    this.socket = io(SOCKET_ENDPOINT);
+    this.socket = this.socketService.setupSocketConnection();
   }
   sendMessage() {
     // this.newMessage = this.username + ": " +this.newMessage

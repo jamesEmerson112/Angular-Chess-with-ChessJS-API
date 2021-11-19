@@ -10,6 +10,15 @@
         <div id="fen"></div>
         <label>PGN:</label>
         <div id="pgn"></div>    
+        <label>testing if getFEN gets string: </label>
+        <span>{{codeFEN}}</span>
+        <button (click)="sayYes()">Say Yes</button>
+        <button (click)="getFEN()">codeFEN</button>
+        <div *ngFor="let codeFEN of codeFENList">
+            <li>
+                {{codeFEN}}
+            </li>
+        </div>
         <app-chat-box></app-chat-box>
     </div>
     
