@@ -36,6 +36,7 @@ export class ChatBoxComponent implements OnInit {
   setupSocketConnection(){
     this.socket = this.socketService.setupSocketConnection();
   }
+  
   sendMessage() {
     // this.newMessage = this.username + ": " +this.newMessage
     this.chatService.sendMessage(this.newMessage);

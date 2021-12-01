@@ -1,9 +1,11 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import * as ChessJS from 'chess.js';
 import * as $ from "jquery";      // same as declare var $: any;
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { timer } from 'rxjs';
 import {ChessboardService} from '../chessboard.service';
 import { SocketService } from '../socket.service';
+import { Injectable } from '@angular/core';
 
 
 // declare ChessBoard here
@@ -21,7 +23,7 @@ export class ChessboardComponent implements OnInit{
   title = 'frontend';
   board: any;
   socket: any;
-  tempCodeFEN: string ="";
+  // tempCodeFEN: string ="";
   newCodeFEN: string="";
   codeFENList: string[]=[];
 
@@ -35,46 +37,49 @@ export class ChessboardComponent implements OnInit{
   ngOnInit(): void {
     this.setBoardName(this.chessboardName);
     this.setUpChessboard();
-    this.sendFEN();
+    this.setupSocketConnection();
     this.getCodeFEN().subscribe((codeFEN:string)=>
     {
       this.codeFENList.push(codeFEN);
+      if(codeFEN != "")
+        this.updateChessBoard(codeFEN);
+        console.log(codeFEN)
     })
   }
 
-  public sendCodeFEN() {
-    this.tempCodeFEN = this.chessboardService.getFEN();
-    this.socket.emit('codeFEN', this.tempCodeFEN);
+  public setUpChessboard(){
+      this.chessboardService.setUpChessboard();
+  }
+  
+  public updateChessBoard(codeFEN:string){
+    this.chessboardService.updateChessBoard(codeFEN);
   }
 
-  getCodeFEN() {
+  public setBoardName(name:string){
+    this.chessboardService.setBoardName(name);
+  }
+  
+  public setupSocketConnection(){
+    this.socket = this.socketService.setupSocketConnection();
+  }
+
+  sayYes(){
+    this.newCodeFEN="Yes "
+  }
+
+  public getCodeFEN() {
     this.socket.on('codeFEN', (codeFEN: string) => {
       this.codeFEN$.next(codeFEN);
     });
     return this.codeFEN$.asObservable();
   }
 
-  setUpChessboard(){
-    this.chessboardService.setUpChessboard();
-  }
-  setBoardName(name:string){
-    this.chessboardService.setBoardName(name);
-  }
-  
-  setupSocketConnection(){
-    this.socket = this.socketService.setupSocketConnection();
-  }
+  // sendCodeFEN(){
+  //   // this.setCodeFEN();
+  //   // this.socket.emit('codeFEN', this.newCodeFEN);
+  // }
 
-  sayYes(){
-    // this.codeFEN="Yes "
-  }
-
-  getFEN(){
-    // this.codeFEN = this.chessboardService.getFEN();
-    // this.codeFEN="Yes"
-  }
-
-  sendFEN(){
-    // this.socket.emit('sendFEN', this.codeFEN);
+  public setCodeFEN() {
+    this.newCodeFEN = this.chessboardService.getFEN();
   }
 }

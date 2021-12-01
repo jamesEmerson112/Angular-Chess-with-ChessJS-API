@@ -11,9 +11,11 @@
         <label>PGN:</label>
         <div id="pgn"></div>    
         <label>testing if getFEN gets string: </label>
-        <span>{{codeFEN}}</span>
+        <span>{{newCodeFEN}}</span>
+        <div id="test"></div>
+
         <button (click)="sayYes()">Say Yes</button>
-        <button (click)="getFEN()">codeFEN</button>
+        <button (click)="setCodeFEN()">setCodeFEN</button>
         <div *ngFor="let codeFEN of codeFENList">
             <li>
                 {{codeFEN}}

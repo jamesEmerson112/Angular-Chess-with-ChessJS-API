@@ -26,7 +26,15 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
 
+## Todo List
+1. get the other client to render the game
+2. Game turn
+
 ## Notes
+https://www.chessboardjs.com/examples#1000
+
+got codeFEN sent.
+
 working on reading codeFEN
 
 https://stackoverflow.com/questions/18722201/two-player-turn-based-game

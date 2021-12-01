@@ -1,6 +1,8 @@
 import { Injectable, OnInit } from '@angular/core';
 import * as ChessJS from 'chess.js';
 import * as $ from "jquery";      // same as declare var $: any;
+import { BehaviorSubject } from 'rxjs';
+import { SocketService } from './socket.service';
 
 // declare ChessBoard here
 declare var ChessBoard: any;
@@ -10,16 +12,16 @@ const Chess = typeof ChessJS === "function" ? ChessJS : ChessJS.Chess;
   providedIn: 'root'
 })
 export class ChessboardService {
-
-  
+  // ***********************VARIABLE***********************
   board: any;
   canEdit = false;
   codeFEN: string = "";
-
-  // ***********************VARIABLE***********************
-  boardLegalMove: any = null;
   game = new Chess();
-  name:string = "";
+  name: string = "";
+  socket: any;
+  public codeFEN$: BehaviorSubject<string> = new BehaviorSubject('');
+  
+
   // this config is using available functions from chessjs
   initialChessConfig = {
     position: 'start',
@@ -33,12 +35,10 @@ export class ChessboardService {
     onDrop: this.onDrop.bind(this),
     onSnapEnd: this.onSnapEnd.bind(this)
   }
+  newChessConfig: any;
 
-
-  constructor() { 
+  constructor(private socketService: SocketService) { 
   }
-
-
 
   // ***********************FUNCTIONS***********************
 
@@ -47,12 +47,46 @@ export class ChessboardService {
   }
 
   getBoardName():string{
-    console.log(this.name);
     return this.name;
   }
 
+  public setupSocketConnection(){
+    this.socket = this.socketService.setupSocketConnection();
+  }
+
   setUpChessboard(): void {
+    this.setupSocketConnection();
     this.board = ChessBoard(this.getBoardName(), this.initialChessConfig);
+  }
+
+  sendCodeFEN(){
+    this.socket.emit('codeFEN', this.codeFEN);
+    console.log("sendCodeFEN")
+  }
+
+  getCodeFEN() {
+    this.socket.on('codeFEN', (codeFEN: string) => {
+      this.codeFEN$.next(codeFEN);
+    });
+    return this.codeFEN$.asObservable();
+  }
+
+  public updateChessBoard(codeFEN:string){
+    this.newChessConfig = {
+      position: codeFEN,
+      draggable: true,
+      // sparePieces: true,
+      dropOffBoard: 'snapback',
+      moveSpeed: 'slow',
+      snapbackSpeed:500,
+      snapSpeed: 100,
+      // onDragStart: this.onDragStart.bind(this),
+      // onDrop: this.onDrop.bind(this),
+      // onSnapEnd: this.onSnapEnd.bind(this)
+    }
+    // this.board = ChessBoard(this.getBoardName(), this.newChessConfig);
+    this.board = ChessBoard(this.getBoardName(), this.initialChessConfig);
+
   }
 
   /**
@@ -101,6 +135,8 @@ export class ChessboardService {
     if (move === null) return 'snapback'
 
     this.updateStatus();
+    console.log("onDrop")
+
 
     return;
   }
@@ -122,31 +158,18 @@ export class ChessboardService {
     
     let moveColor = 'White';
     if (this.game.turn() === 'b')
-    {
       moveColor = 'Black'
-    }
 
     // checkmate?
     if (this.game.in_checkmate())
-    {
-      statusTemp = 'Game over, ' + moveColor + ' is in checkmate'
-    }
-
-    // draw?
+      statusTemp = 'Game over, ' + moveColor + ' is in checkmate';
     else if (this.game.in_draw()) 
-    {
       statusTemp = 'Game over, drawn position'
-    }
-
     else
     {
       statusTemp = moveColor + ' to move'
-
-      // check?
       if(this.game.in_check())
-      {
         statusTemp += ', ' + moveColor + ' is in check'
-      }
     }
 
     // debug
@@ -155,7 +178,12 @@ export class ChessboardService {
     $('#fen').html(this.game.fen())
     $('#pgn').html(this.game.pgn())
 
+    $('#test').html(this.game.fen())
     this.codeFEN = this.game.fen().toString();
+
+    this.sendCodeFEN();
+
+    console.log("updateStatus")
   }
   
   getFEN()
