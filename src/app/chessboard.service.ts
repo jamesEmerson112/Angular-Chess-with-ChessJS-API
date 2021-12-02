@@ -81,12 +81,11 @@ export class ChessboardService {
       snapbackSpeed:500,
       snapSpeed: 100,
       // onDragStart: this.onDragStart.bind(this),
-      // onDrop: this.onDrop.bind(this),
+      onDrop: this.onDrop.bind(this),
       // onSnapEnd: this.onSnapEnd.bind(this)
     }
     // this.board = ChessBoard(this.getBoardName(), this.newChessConfig);
-    this.board = ChessBoard(this.getBoardName(), this.initialChessConfig);
-
+    this.board = ChessBoard(this.getBoardName(), this.newChessConfig);
   }
 
   /**
@@ -174,7 +173,7 @@ export class ChessboardService {
 
     // debug
     // automatically update to the html attributes
-    $('#status').text(statusTemp)
+    $('#status').text(this.game.turn())
     $('#fen').html(this.game.fen())
     $('#pgn').html(this.game.pgn())
 
@@ -183,7 +182,7 @@ export class ChessboardService {
 
     this.sendCodeFEN();
 
-    console.log("updateStatus")
+    console.log("updateStatus: game turn is "+ this.game.turn())
   }
   
   getFEN()
