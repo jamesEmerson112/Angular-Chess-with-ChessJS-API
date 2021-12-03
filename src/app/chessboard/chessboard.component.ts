@@ -27,9 +27,14 @@ export class ChessboardComponent implements OnInit{
   newCodeFEN: string="";
   codeFENList: string[]=[];
 
+  // for receiving info
+  public playerColor$: BehaviorSubject<string> = new BehaviorSubject('');
   public codeFEN$: BehaviorSubject<string> = new BehaviorSubject('');
+  public PGN$: BehaviorSubject<string> = new BehaviorSubject('');
 
   chessboardName: string = "board1";
+  playerColor: string = "";
+  PGN: string ="";
 
   constructor(private chessboardService: ChessboardService,
     private socketService: SocketService){}
@@ -42,17 +47,58 @@ export class ChessboardComponent implements OnInit{
     {
       this.codeFENList.push(codeFEN);
       if(codeFEN != "")
-        this.updateChessBoard(codeFEN);
+        // this.updateChessBoard(codeFEN);
         console.log(codeFEN)
     })
+
+    this.getPGN().subscribe((PGN:string)=>
+    {
+      // this.PGN = PGN;
+      if(PGN != "")
+      {
+        this.updateChessBoard(PGN);
+        console.log(PGN)
+      }
+        
+    })
+  }
+
+  public setPlayerColor(playerColor:string){
+    this.chessboardService.setPlayerColor(playerColor);
+  }
+
+  public getPlayerColor() {
+    this.socket.on('playerColor', (playerColor: string) => {
+      this.playerColor$.next(playerColor);
+    });
+    return this.playerColor$.asObservable();
+  }
+
+  public getPGN() {
+    this.socket.on('PGN', (PGN: string) => {
+      this.PGN$.next(PGN);
+    });
+    return this.PGN$.asObservable();
+  }
+
+  
+  public getCodeFEN() {
+    this.socket.on('codeFEN', (codeFEN: string) => {
+      this.codeFEN$.next(codeFEN);
+    });
+    return this.codeFEN$.asObservable();
   }
 
   public setUpChessboard(){
       this.chessboardService.setUpChessboard();
   }
   
-  public updateChessBoard(codeFEN:string){
-    this.chessboardService.updateChessBoard(codeFEN);
+  // public updateChessBoard(codeFEN:string){
+  //   this.chessboardService.updateChessBoard(codeFEN);
+  // }
+
+  public updateChessBoard(PGN:string){
+    this.chessboardService.updateChessBoard(PGN);
   }
 
   public setBoardName(name:string){
@@ -65,13 +111,6 @@ export class ChessboardComponent implements OnInit{
 
   sayYes(){
     this.newCodeFEN="Yes "
-  }
-
-  public getCodeFEN() {
-    this.socket.on('codeFEN', (codeFEN: string) => {
-      this.codeFEN$.next(codeFEN);
-    });
-    return this.codeFEN$.asObservable();
   }
 
   // sendCodeFEN(){

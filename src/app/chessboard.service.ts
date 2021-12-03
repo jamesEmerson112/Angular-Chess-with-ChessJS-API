@@ -12,14 +12,23 @@ const Chess = typeof ChessJS === "function" ? ChessJS : ChessJS.Chess;
   providedIn: 'root'
 })
 export class ChessboardService {
+
   // ***********************VARIABLE***********************
   board: any;
-  canEdit = false;
-  codeFEN: string = "";
-  game = new Chess();
-  name: string = "";
   socket: any;
+
+  game = new Chess();
+  canEdit = false;
+
+  codeFEN: string = "";
+  name: string = "";
+  playerColor: string ="";
+  PGN: string = "";
+
+  // for sending info because we want to send every time we make a move
+  // public playerColor$: BehaviorSubject<string> = new BehaviorSubject('');
   public codeFEN$: BehaviorSubject<string> = new BehaviorSubject('');
+  // public PGN$: BehaviorSubject<string> = new BehaviorSubject('');
   
 
   // this config is using available functions from chessjs
@@ -37,16 +46,17 @@ export class ChessboardService {
   }
   newChessConfig: any;
 
+
   constructor(private socketService: SocketService) { 
   }
 
   // ***********************FUNCTIONS***********************
 
-  setBoardName(name: string){
+  public setBoardName(name: string){
     this.name = name;
   }
 
-  getBoardName():string{
+  public getBoardName():string{
     return this.name;
   }
 
@@ -54,38 +64,60 @@ export class ChessboardService {
     this.socket = this.socketService.setupSocketConnection();
   }
 
-  setUpChessboard(): void {
+  public setUpChessboard(): void {
     this.setupSocketConnection();
     this.board = ChessBoard(this.getBoardName(), this.initialChessConfig);
   }
 
-  sendCodeFEN(){
+  public sendCodeFEN(){
     this.socket.emit('codeFEN', this.codeFEN);
+
+    this.socket.emit('playerColor', this.playerColor);
+    this.socket.emit('PGN', this.PGN);
     console.log("sendCodeFEN")
   }
 
-  getCodeFEN() {
-    this.socket.on('codeFEN', (codeFEN: string) => {
-      this.codeFEN$.next(codeFEN);
-    });
-    return this.codeFEN$.asObservable();
+  // public getCodeFEN() {
+  //   this.socket.on('codeFEN', (codeFEN: string) => {
+  //     this.codeFEN$.next(codeFEN);
+  //   });
+  //   return this.codeFEN$.asObservable();
+  // }
+
+  // public getPlayerColor() {
+  //   this.socket.on('playerColor', (playerColor: string) => {
+  //     this.playerColor$.next(playerColor);
+  //   });
+  //   return this.playerColor$.asObservable();
+  // }
+
+  // public getPNG() {
+  //   this.socket.on('PGN', (PGN: string) => {
+  //     this.PGN$.next(PGN);
+  //   });
+  //   return this.PGN$.asObservable();
+  // }
+
+  public updateChessBoard(PGN:string){
+    // this.newChessConfig = {
+    //   position: codeFEN,
+    //   draggable: true,
+    //   // sparePieces: true,
+    //   dropOffBoard: 'snapback',
+    //   moveSpeed: 'slow',
+    //   snapbackSpeed:500,
+    //   snapSpeed: 100,
+    //   onDragStart: this.onDragStart.bind(this),
+    //   onDrop: this.onDrop.bind(this),
+    //   // onSnapEnd: this.onSnapEnd.bind(this)
+    // }
+    // this.board = ChessBoard(this.getBoardName(), this.newChessConfig);
+    this.game.load_pgn(this.PGN);
+    console.log("updateChessBoard")
   }
 
-  public updateChessBoard(codeFEN:string){
-    this.newChessConfig = {
-      position: codeFEN,
-      draggable: true,
-      // sparePieces: true,
-      dropOffBoard: 'snapback',
-      moveSpeed: 'slow',
-      snapbackSpeed:500,
-      snapSpeed: 100,
-      // onDragStart: this.onDragStart.bind(this),
-      onDrop: this.onDrop.bind(this),
-      // onSnapEnd: this.onSnapEnd.bind(this)
-    }
-    // this.board = ChessBoard(this.getBoardName(), this.newChessConfig);
-    this.board = ChessBoard(this.getBoardName(), this.newChessConfig);
+  public setPlayerColor(playerColor: string) {
+    return;
   }
 
   /**
@@ -98,7 +130,7 @@ export class ChessboardService {
    * @param orientation 
    * @returns false if the game is over or false if the turn is invalid
    */
-  onDragStart(source: any, piece: any, position: any, orientation: any) {
+  public onDragStart(source: any, piece: any, position: any, orientation: any) {
     // do not pick up pieces if the game is over
     console.log(this.game.game_over())
     if (this.game.game_over())
@@ -120,7 +152,7 @@ export class ChessboardService {
    * @param target 
    * @returns false if the game is over or false if the turn is invalid
    */
-  onDrop (source:any, target:any){
+  public onDrop (source:any, target:any){
     // see if the move is legal
     let move = this.game.move(
       {
@@ -132,11 +164,8 @@ export class ChessboardService {
 
     // illegal move
     if (move === null) return 'snapback'
-
     this.updateStatus();
     console.log("onDrop")
-
-
     return;
   }
 
@@ -145,14 +174,14 @@ export class ChessboardService {
    * for castling, en passant, pawn promotion
    */
 
-  onSnapEnd() {
+  public onSnapEnd() {
     this.board.position(this.game.fen());
   }
 
   /**
    * updateStatus keeps the game updated. Update each turn
    */
-  updateStatus() {
+  public updateStatus() {
     let statusTemp = '';
     
     let moveColor = 'White';
@@ -178,14 +207,17 @@ export class ChessboardService {
     $('#pgn').html(this.game.pgn())
 
     $('#test').html(this.game.fen())
-    this.codeFEN = this.game.fen().toString();
 
+    this.playerColor = this.game.turn().toString();
+    this.codeFEN = this.game.fen().toString();
+    this.PGN = this.game.pgn().toString();
+    console.log("test PGN " + this.PGN)
     this.sendCodeFEN();
 
     console.log("updateStatus: game turn is "+ this.game.turn())
   }
   
-  getFEN()
+  public getFEN()
   {
     return this.codeFEN;
   }
