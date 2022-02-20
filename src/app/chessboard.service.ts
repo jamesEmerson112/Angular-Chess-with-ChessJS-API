@@ -26,7 +26,7 @@ export class ChessboardService {
   PGN: string = "";
 
   // for sending info because we want to send every time we make a move
-  // public playerColor$: BehaviorSubject<string> = new BehaviorSubject('');
+  // public playerColor$: BehaviorSubject<string> = new BehaviorSubject('');wwww
   public codeFEN$: BehaviorSubject<string> = new BehaviorSubject('');
   // public PGN$: BehaviorSubject<string> = new BehaviorSubject('');
   
