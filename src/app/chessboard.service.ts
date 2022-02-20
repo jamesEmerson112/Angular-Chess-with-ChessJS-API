@@ -6,7 +6,7 @@ import { SocketService } from './socket.service';
 
 // declare ChessBoard here
 declare var ChessBoard: any;
-const Chess = typeof ChessJS === "function" ? ChessJS : ChessJS.Chess;
+const Chess = typeof ChessJS === "function" ? ChessJS : ChessJS.Chess;      // quick fix to use chessJs
 
 @Injectable({
   providedIn: 'root'
@@ -113,6 +113,8 @@ export class ChessboardService {
     // }
     // this.board = ChessBoard(this.getBoardName(), this.newChessConfig);
     this.game.load_pgn(this.PGN);
+    // if(this.game.getTurn() == "b")   this.game.setTurn("w");
+    // this.game.setTurn("w");
     console.log("updateChessBoard")
   }
 
@@ -164,6 +166,7 @@ export class ChessboardService {
 
     // illegal move
     if (move === null) return 'snapback'
+
     this.updateStatus();
     console.log("onDrop")
     return;
@@ -211,6 +214,8 @@ export class ChessboardService {
     this.playerColor = this.game.turn().toString();
     this.codeFEN = this.game.fen().toString();
     this.PGN = this.game.pgn().toString();
+
+
     console.log("test PGN " + this.PGN)
     this.sendCodeFEN();
 

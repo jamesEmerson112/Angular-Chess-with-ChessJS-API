@@ -46,9 +46,10 @@ export class ChessboardComponent implements OnInit{
     this.getCodeFEN().subscribe((codeFEN:string)=>
     {
       this.codeFENList.push(codeFEN);
+      this.updateChessBoard(codeFEN);
       if(codeFEN != "")
         // this.updateChessBoard(codeFEN);
-        console.log(codeFEN)
+        console.log("FEN is received: " + codeFEN)
     })
 
     this.getPGN().subscribe((PGN:string)=>
