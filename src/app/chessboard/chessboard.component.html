@@ -16,6 +16,8 @@
 
         <button (click)="sayYes()">Say Yes</button>
         <button (click)="setCodeFEN()">setCodeFEN</button>
+
+        <!-- printing out the FEN -->
         <div *ngFor="let codeFEN of codeFENList">
             <li>
                 {{codeFEN}}

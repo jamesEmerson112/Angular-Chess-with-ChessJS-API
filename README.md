@@ -1,6 +1,30 @@
 # Chess1
 
+Welcome to my chess project. I created this for fun because my friend was promising an Angular job at the time. Now I am using this to deploy to aws.
+
+## Command to install on Amazon Linux
+ssh-keygen -t rsa
+(then assign ssh key to the github)
+
+git clone git@github.com:jamesEmerson112/Angular-Chess-with-ChessJS-API.git
+
+amazon-linux-extras install epel
+
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+
+. ~/.nvm/nvm.sh
+
+nvm install node
+
+npm install
+
+npm run ng serve
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.10.
+
+## Resources
+- For deploying via AWS Codepine, follow https://tusharghosh09006.medium.com/continuously-deploy-angular-app-to-amazon-ec2-using-aws-codepipeline-f29ed1e3ce06
+- For deploying only with nginx https://medium.com/thecodr/deploying-an-angular-app-onto-an-ec2-instance-using-github-262c89dbde68
 
 ## Development server
 
