@@ -1,10 +1,20 @@
-# Chess1
+# Chess
 
-Welcome to my chess project. I created this for fun because my friend was promising an Angular job at the time. Now I am using this to deploy to aws.
+
+Welcome to my chess project. My friend told me Angular and type script were difficult to learn so I wrote this out of spite.
+
+This project is deployed on AWS EC2. Another duplicate will be created to get deployed with either AWS Codepipe line or AWS EBS.
+
+This is the current link of the project http://ec2-54-219-230-68.us-west-1.compute.amazonaws.com/
+
 
 ## Command to install on Amazon Linux
+sudo yum update -y
+
+sudo yum install git -y
+
 ssh-keygen -t rsa
-(then assign ssh key to the github)
+(then locate the .pub file and assign ssh key to the github)
 
 git clone git@github.com:jamesEmerson112/Angular-Chess-with-ChessJS-API.git
 
@@ -14,11 +24,28 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
 
 . ~/.nvm/nvm.sh
 
-nvm install node
+nvm install 16.13.0
+
+nvm use 16.13.0
+
+cd Angular-Chess-with-ChessJS-API
 
 npm install
 
-npm run ng serve
+npm update
+
+amazon-linux-extras install nginx
+
+sudo systemctl start nginx
+
+sudo vim /etc/nginx/nginx.conf
+(then change the location to the folder of repository, which is /home/ec2-user/Angular-Chess-with-ChessJS-API/dist)
+
+sudo chmod 755 /home/ec2-user/
+
+sudo systemctl reload nginx
+
+sudo systemctl restart nginx
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.10.
 
